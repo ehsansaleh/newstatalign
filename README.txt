@@ -1,3 +1,5 @@
+This code is a replicate of original version of statalign, available at http://statalign.github.io/. In this minor version, the feature to run statalign for a certain amount of time was added.
+
 StatAlign v3.2
 
 http://statalign.github.io/
