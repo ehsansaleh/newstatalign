@@ -31,6 +31,11 @@ public class MCMCPars {
 	public long seed;
 	
 	/**
+	 * The duration for running
+	 */
+	static public long duration=-1;
+	
+	/**
 	 * The swap seed for the swap random number generator.
 	 */
 	public long swapSeed;

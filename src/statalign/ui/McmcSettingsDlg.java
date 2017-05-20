@@ -41,6 +41,7 @@ public class McmcSettingsDlg extends JDialog implements ActionListener, KeyListe
 	private JTextField sampRate = new JTextField(10);
 	private JTextField seed = new JTextField(10);
 	private JTextField randomisationPeriod = new JTextField(10);
+	private JTextField stopDuration = new JTextField(10);
 	
 	private JCheckBox automateStepRate = new JCheckBox("Automate (Slow)",false);
 	private JCheckBox automateNumberOfSamples = new JCheckBox("Automate (RNA only)",false);
@@ -57,9 +58,9 @@ public class McmcSettingsDlg extends JDialog implements ActionListener, KeyListe
 		cp.setLayout(new BorderLayout());
 		Box bigBox = Box.createVerticalBox();
 		JPanel pan = new JPanel();
-		GridLayout l = new GridLayout(5,4);
-		l.setHgap(5);
-		l.setVgap(5);
+		GridLayout l = new GridLayout(6,4);
+		l.setHgap(6);
+		l.setVgap(6);
 		pan.setLayout(l);
 		pan.add(new JLabel("Burn-in cycles:"));
 		burnIn.addKeyListener(this);
@@ -108,6 +109,10 @@ public class McmcSettingsDlg extends JDialog implements ActionListener, KeyListe
 		pan.add(new JLabel("Randomisation period:"));
 		randomisationPeriod.addKeyListener(this);
 		pan.add(randomisationPeriod);
+		
+		pan.add(new JLabel("Running duration (seconds):"));
+		stopDuration.addKeyListener(this);
+		pan.add(stopDuration);
 		//myButton.isSelected()
 		
 		
@@ -142,6 +147,7 @@ public class McmcSettingsDlg extends JDialog implements ActionListener, KeyListe
 		sampRate.setText(Integer.toString(pars.sampRate));
 		seed.setText(Integer.toString((int) pars.seed));
 		randomisationPeriod.setText(Integer.toString((int) pars.randomisationPeriod));
+		stopDuration.setText(Integer.toString((int) MCMCPars.duration));
 //		outFile.setText(sp.outFile);
 		setLocationRelativeTo(c);
 //		pack();
@@ -187,6 +193,7 @@ public class McmcSettingsDlg extends JDialog implements ActionListener, KeyListe
 				pars.sampRate = Integer.parseInt(sampRate.getText());
 				pars.seed = Integer.parseInt(seed.getText());
 				pars.randomisationPeriod = Integer.parseInt(randomisationPeriod.getText());
+				MCMCPars.duration = Integer.parseInt(stopDuration.getText());
 				AutomateParameters.setAutomateStepRate(automateStepRate.isSelected());
 				AutomateParameters.setAutomateNumberOfSamples(automateNumberOfSamples.isSelected());
 				AutomateParameters.setAutomateBurnIn(automateBurnIn.isSelected());

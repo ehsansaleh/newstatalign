@@ -140,6 +140,10 @@ public class MainManager {
 
 			thread = new MainThread(this);
 			thread.start();
+
+			
+	
+			
 			
 		} catch (IOException e) {
 			e.printStackTrace();

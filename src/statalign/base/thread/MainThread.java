@@ -2,6 +2,7 @@ package statalign.base.thread;
 
 import java.io.File;
 
+import statalign.base.MCMCPars;
 import statalign.base.MainManager;
 import statalign.base.Mcmc;
 import statalign.base.Tree;
@@ -37,6 +38,34 @@ public class MainThread extends StoppableThread {
 	@Override
 	public synchronized void run() {
 		try {
+			long tempvar;
+			if(MCMCPars.duration!=-1){
+				tempvar=1000*MCMCPars.duration;
+			}
+			else{
+				tempvar=0;
+			}
+			final long myduration = tempvar;
+			
+			Thread stopthread = new Thread(new Runnable() {
+
+			    @Override
+			    public void run() {
+			    	try {
+			    		while (!Thread.currentThread().isInterrupted()) {
+			    			sleep(myduration);
+			    			stopSoft();
+			    		}
+					} catch (InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+			    }
+			            
+			});
+
+			if(MCMCPars.duration!=-1){
+				stopthread.start();
+			}
 			
 			owner.inputData.pars.fixAlign = owner.inputData.useAlign >= 2;
 			owner.inputData.pars.fixTopology = owner.inputData.useTree >= 2;
@@ -94,6 +123,12 @@ public class MainThread extends StoppableThread {
 			int errorCode = mcmc.doMCMC();
 			owner.finished(errorCode, null);
 			System.out.println(errorCode == 0 ? "Ready." : "Stopped.");
+			
+			if(MCMCPars.duration!=-1){
+				stopthread.interrupt();
+			}
+			System.out.println("Finished the job.");
+
 		} catch(StoppedException e) {
 			if (owner.frame != null) {
 				owner.frame.statusText.setText(MainFrame.IDLE_STATUS_MESSAGE);

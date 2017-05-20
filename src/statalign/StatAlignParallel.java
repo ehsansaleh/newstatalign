@@ -6,6 +6,20 @@ import mpi.MPI;
 import statalign.base.MainManager;
 import statalign.postprocess.Postprocess;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Files;
+
+import javax.swing.JOptionPane;
+
+import statalign.base.MainManager;
+import statalign.postprocess.Postprocess;
+import statalign.ui.ErrorMessage;
+import statalign.ui.MainFrame;
+
 public class StatAlignParallel {
 
     public static void main(String[] args) {
@@ -38,15 +52,20 @@ public class StatAlignParallel {
         MainManager manager = new MainManager(null);
         CommandLine cl = new CommandLine(true);
         
+
+        
         // Only get INFO messages (errors and warnings excluded) from the master.
         if (MPIUtils.isMaster(rank)) {
         	cl.setVerbose(true);
+        	// Configure the program.
+           
+        	
         }
-        
-        // Configure the program.
         if (cl.fillParams(realArguments, manager) > 0) {
             System.exit(1);
         }
+     
+        
         
         // TODO cf. comment in StatAlign
 		manager.init(cl.pluginParameters);

@@ -15,6 +15,7 @@ import ml.options.Options;
 import ml.options.Options.Multiplicity;
 import ml.options.Options.Separator;
 import statalign.base.AutomateParameters;
+import statalign.base.MCMCPars;
 import statalign.base.MainManager;
 import statalign.base.Tree;
 import statalign.base.Utils;
@@ -85,6 +86,7 @@ public class CommandLine {
 				.addOption("usealign", Separator.EQUALS)
 				.addOption("usetree", Separator.EQUALS)
 				.addOption("ot", Separator.EQUALS)
+				.addOption("stop", Separator.EQUALS)
 				.addOption("log", Separator.EQUALS)
 				.addOption("plugin", Separator.COLON, Multiplicity.ZERO_OR_MORE)
 				.addOption("help", Separator.COLON, Multiplicity.ZERO_OR_MORE)
@@ -165,6 +167,7 @@ public class CommandLine {
 //				} catch (IOException e) {
 //					return error("error reading input file " + inputFile);
 //				}
+//				System.out.println(inputFile.length());
 				File file = new File(inputFile);
 				if(!file.exists())
 					return error("input file does not exist: "+inputFile);
@@ -294,6 +297,15 @@ public class CommandLine {
 					manager.inputData.pars.seed = Integer.parseInt(seedPar);
 				} catch (NumberFormatException e) {
 					return error("error parsing seed parameter: " + seedPar);
+				}
+			}
+			
+			if (set.isSet("stop")) {
+				int duration = Integer.parseInt(set.getOption("stop").getResultValue(0));
+				try {
+					MCMCPars.duration = duration;
+				} catch (NumberFormatException e) {
+					return error("error parsing duration parameter: " + duration);
 				}
 			}
 			
@@ -517,6 +529,10 @@ public class CommandLine {
 			  .append("          (One of: "
 					+ Utils.joinStrings(MainManager.alignmentTypes, ", ") + ")\n")
 			  .append("        Default: " + MainManager.alignmentTypes[0] + "\n\n")
+			  
+			  .append("    -stop=duration\n")
+			  .append("        Stops after specified time duration (in seconds).\n\n")
+			  
 	
 			  .append("    -log=["
 					+ Utils.joinStrings(postprocAbbr.keySet().toArray(), "][,")

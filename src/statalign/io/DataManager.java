@@ -13,6 +13,7 @@ public class DataManager {
 	
 	public void init() {
 		readers = Utils.findPlugins(DataReader.class);
+		System.out.println("length of readers is: "+Integer.toString(readers.size()) );
 	}
 	
 	/**
@@ -24,7 +25,9 @@ public class DataManager {
 	public DataType read(File file) {
 		String ext = getExtension(file);
 		DataType data;
-		for(DataReader reader : readers) {	
+		
+		for(DataReader reader : readers) {
+			System.out.println("Extension is: \""+ext+"\"");
 			if(reader.supportedExtensions().contains(ext)) {
 				try {
 					data = reader.read(file);
